@@ -8,13 +8,21 @@
   rpm_key:
     key: https://download.docker.com/linux/centos/gpg
 
-- name: docker | ensure docker repo is set
-  shell: >
-    yum-config-manager
-    --add-repo
-    https://download.docker.com/linux/centos/docker-ce.repo
-  args:
-    creates: /etc/yum.repos.d/docker-ce.repo
+# - name: docker | ensure docker repo is set
+#   shell: >
+#     yum-config-manager
+#     --add-repo
+#     https://download.docker.com/linux/centos/docker-ce.repo
+#   args:
+#     creates: /etc/yum.repos.d/docker-ce.repo
+
+- name: docker | ensure repo is set
+  get_url:
+    url: "{{ pmm_docker_url }}"
+    dest: /etc/yum.repos.d/docker-ce.repo
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: docker | ensure python3 and docker-ce are installed
   dnf:

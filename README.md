@@ -1,12 +1,13 @@
 PMM Server
 ----------
 
-This role installs PMM Server 2 on Docker for RedHat/CentOS 8. Tested with Ansible v2.9.13, but should on older versions as well.
+This role installs PMM Server 2 on Docker-ce for RedHat/CentOS 8. Tested with Ansible v2.9.13, but should on older versions as well.
 
 Notes
 -----
 
- * v1.0 - initial release
+ * v1.0.0 - initial release
+ * v1.0.1 - improved repo handling, and updated readme
 
 Firewalld
 ---------
@@ -58,4 +59,19 @@ By default, Docker can only be run by root. Specify users which can also execute
 pmm_docker_users:
   - my_user
   - another_user
+```
+
+Example
+-------
+
+```yaml
+---
+- hosts: my_host
+  become: true
+  vars:
+    pmm_server_pass: something
+    pmm_docker_users:
+      - my-user
+  roles:
+    - ansible-pmm-server
 ```

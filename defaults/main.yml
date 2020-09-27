@@ -5,3 +5,5 @@ pmm_certs_dir: /etc/pmm-certs/
 
 pmm_server_pass: admin
 pmm_docker_users: []
+
+pmm_docker_url: https://download.docker.com/linux/centos/docker-ce.repo
