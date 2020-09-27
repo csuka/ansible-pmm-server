@@ -4,7 +4,7 @@
     path: "{{ pmm_certs_dir }}"
     state: directory
 
-- name: certs | generate ssl key
+- name: certs | ensure ssl key and crt exists
   args:
     creates: "{{ pmm_certs_dir }}server.crt"
   shell: >
