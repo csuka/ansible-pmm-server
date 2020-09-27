@@ -61,8 +61,8 @@ pmm_docker_users:
   - another_user
 ```
 
-Example
--------
+Example playbook
+----------------
 
 ```yaml
 ---
