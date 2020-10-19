@@ -1,13 +1,14 @@
 PMM Server
 ----------
 
-This role installs PMM Server 2 on Docker-ce for RedHat/CentOS 8. Tested with Ansible v2.9.13, but should work on older versions as well.
+This role installs PMM Server 2 on Docker-ce for RedHat/CentOS 8. Tested with Ansible v2.9 and 2.10, but should work on older versions as well.
 
 Versioning
 ----------
 
  * v1.0.0 - initial release
  * v1.0.1 - improved repo handling, and updated readme
+ * v1.0.2 - added support for ansible 2.10
 
 Firewalld
 ---------
