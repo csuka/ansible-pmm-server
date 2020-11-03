@@ -14,7 +14,6 @@ Versioning
 Firewalld
 ---------
 
-
 As firewalld and Docker don't mix, firewalld is stopped by default. Enabling firewalld might break networking and other parts.
 
 SSL
