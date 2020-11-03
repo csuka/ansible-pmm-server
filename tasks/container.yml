@@ -1,35 +1,73 @@
 ---
-- name: container | ensure data container is set
-  docker_container:
-    name: pmm-data
-    image: "percona/pmm-server:{{ pmm_server_version }}"
-    state: present
-    container_default_behavior: compatibility
-    volumes:
-      - /opt/prometheus/data
-      - /opt/consul-data
-      - /var/lib/mysql
-      - /var/lib/grafana
-    command: /bin/true
+- block:
 
-- name: container | ensure pmm-server runs
-  docker_container:
-    name: pmm-server
-    image: "percona/pmm-server:{{ pmm_server_version }}"
-    state: started
-    container_default_behavior: compatibility
-    # env:
-    #   SERVER_USER: "{{ pmm_server_user }}"
-    #   SERVER_PASSWORD: "{{ pmm_server_pass }}"
-    volumes:
-      - '{{ pmm_certs_dir }}:/etc/nginx/ssl'
-    volumes_from:
-      - pmm-data
-    ports:
-      - "80:80"
-      - "443:443"
-    restart_policy: always
-  register: run_pmm_container
+    - name: container | ensure data container is set
+      docker_container:
+        name: pmm-data
+        image: "percona/pmm-server:{{ pmm_server_version }}"
+        state: present
+        container_default_behavior: compatibility
+        volumes:
+          - /opt/prometheus/data
+          - /opt/consul-data
+          - /var/lib/mysql
+          - /var/lib/grafana
+        command: /bin/true
+
+    - name: container | ensure pmm-server runs
+      docker_container:
+        name: pmm-server
+        image: "percona/pmm-server:{{ pmm_server_version }}"
+        state: started
+        container_default_behavior: compatibility
+        # env:
+        #   SERVER_USER: "{{ pmm_server_user }}"
+        #   SERVER_PASSWORD: "{{ pmm_server_pass }}"
+        volumes:
+          - '{{ pmm_certs_dir }}:/etc/nginx/ssl'
+        volumes_from:
+          - pmm-data
+        ports:
+          - "80:80"
+          - "443:443"
+        restart_policy: always
+      register: run_pmm_container
+
+  when: ansible_version.minor >= 10 | int
+
+- block:
+
+    - name: container | ensure data container is set
+      docker_container:
+        name: pmm-data
+        image: "percona/pmm-server:{{ pmm_server_version }}"
+        state: present
+        volumes:
+          - /opt/prometheus/data
+          - /opt/consul-data
+          - /var/lib/mysql
+          - /var/lib/grafana
+        command: /bin/true
+
+    - name: container | ensure pmm-server runs for ansible v2.9 or lower
+      docker_container:
+        name: pmm-server
+        image: "percona/pmm-server:{{ pmm_server_version }}"
+        state: started
+        # env:
+        #   SERVER_USER: "{{ pmm_server_user }}"
+        #   SERVER_PASSWORD: "{{ pmm_server_pass }}"
+        volumes:
+          - '{{ pmm_certs_dir }}:/etc/nginx/ssl'
+        volumes_from:
+          - pmm-data
+        ports:
+          - "80:80"
+          - "443:443"
+        restart_policy: always
+      register: run_pmm_container
+
+  when: 9 <= ansible_version.minor | int
 
 # The tasks are too fast, so a pause is required...
 # - name: container | wait for the container to start
