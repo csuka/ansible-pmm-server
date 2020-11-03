@@ -8,7 +8,8 @@ Versioning
 
  * v1.0.0 - initial release
  * v1.0.1 - improved repo handling, and updated readme
- * v1.0.2 - added support for ansible 2.10
+ * v1.0.2 - added support for Ansible 2.10
+ * v1.0.3 - improve support handling for Ansible v2.9
 
 Firewalld
 ---------
